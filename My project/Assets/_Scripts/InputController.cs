@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class InputController : MonoBehaviour
 {
     public static InputController Instance;
-
+    InputAction shootInput;
     InputAction movementInput;
 
     [HideInInspector] public Vector2 movementVector;
@@ -21,16 +21,25 @@ public class InputController : MonoBehaviour
         }
 
         movementInput = InputSystem.actions.FindAction("Move");
+        shootInput = InputSystem.actions.FindAction("Attack");
     }
 
     // Update is called once per frame
     void Update()
     {
         GetMoveInput();
+        Shoot();
     }
 
     public void GetMoveInput()
     {
         movementVector = movementInput.ReadValue<Vector2>();
+    }
+    public void Shoot()
+    {
+        if (shootInput.WasPressedThisFrame())
+        {
+            GunController.Instance.Fire();
+        }
     }
 }
